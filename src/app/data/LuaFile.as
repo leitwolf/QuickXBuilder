@@ -198,8 +198,8 @@ package app.data
 		private function analyseLayer(data:ControlData,name:String,parent:String):void
 		{
 			var color:ColorTransform=new ColorTransform();
-			color.color=data.layerData.color;	
-			color.alphaMultiplier=data.layerData.alpha;
+			color.color=data.layerData.color;
+			color.alphaOffset=255*data.layerData.alpha;
 			this.addLine("local color = cc.c4f(_r, _g, _b, _a)",{_r:color.redOffset,_g:color.greenOffset,_b:color.blueOffset,_a:color.alphaOffset});			
 			this.addLine("local _control = display.newColorLayer(color)",{_control:name});
 			this.addLine("_control:setVisible(_visible)",{_control:name,_visible:data.nodeData.visible});
