@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:WindowedApplication xmlns:fx="http://ns.adobe.com/mxml/2009"
+					   xmlns:s="library://ns.adobe.com/flex/spark"
+					   xmlns:mx="library://ns.adobe.com/flex/mx"
+					   xmlns:ns1="*"
+					   width="1500" height="900"
+					   applicationComplete="windowedapplication1_applicationCompleteHandler(event)"
+					   showStatusBar="false">
+	<fx:Style source="QuickXBuilder.css"/>
+	<fx:Script>
+		<![CDATA[
+			import AirLib.G;
+			
+			import app.MainScene;
+			
+			import mx.events.FlexEvent;
+			
+			protected function windowedapplication1_applicationCompleteHandler(event:FlexEvent):void
+			{
+				G.switchScene(MainScene);
+			}
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<s:BorderContainer left="6" right="6" top="6" height="36" borderVisible="false">
+		<s:layout>
+			<s:HorizontalLayout gap="2" verticalAlign="middle"/>
+		</s:layout>
+		<mx:LinkButton id="newScene" width="75" height="27" label="新建场景" fontSize="14"/>
+		<mx:VRule width="4" height="25" strokeColor="#F7FCFC"/>
+		<mx:LinkButton id="saveScene" label="保存"/>
+		<mx:LinkButton id="newProject" width="75" height="27" label="导入项目" fontSize="14"/>
+		<mx:LinkButton id="modifyProject" label="修改项目"/>
+		<s:DropDownList id="recentProjectList" width="128"></s:DropDownList>
+		<s:DropDownList id="resolution" width="169"></s:DropDownList>
+		<mx:LinkButton id="customResolution" label="自定义分辨率"/>
+		<s:DropDownList id="dir" width="68"></s:DropDownList>
+		<s:DropDownList id="zoom" width="70"></s:DropDownList>
+		<s:ToggleButton id="dragScene" label="可拖动" selected="false"/>
+		<mx:LinkButton id="publish" width="50" height="27" label="发布" fontSize="14"/>
+		<mx:VRule width="4" height="25" strokeColor="#F7FCFC"/>
+	</s:BorderContainer>
+	<s:Group left="6" right="6" top="43" bottom="6">
+		<s:layout>
+			<s:BasicLayout/>
+		</s:layout>
+			<!-- left -->
+			<mx:VDividedBox left="0" top="0" bottom="0" width="250" liveDragging="true">
+				<!-- nevigation -->
+				<s:BorderContainer width="100%" height="350" borderStyle="solid">
+					<s:List id="projectView" left="0" right="0" top="0" bottom="0"></s:List>
+				</s:BorderContainer>
+				<!-- controls -->
+				<s:BorderContainer width="100%" borderStyle="solid">
+					<mx:Tree id="controlView" left="0" right="0" top="0" bottom="0">
+					</mx:Tree>
+				</s:BorderContainer>
+			</mx:VDividedBox>
+			<!-- work space -->
+			<s:BorderContainer left="250" right="250" top="0" bottom="0" borderStyle="solid">
+						<s:Group id="groupContainer" left="80" right="0" top="0" bottom="0">
+							<s:BorderContainer id="maskContainer" left="0" right="0" top="0" bottom="0" />
+							<s:SkinnableContainer id="workContainer" x="0" y="0" width="150" height="150" mask="{maskContainer}">
+							</s:SkinnableContainer>
+						</s:Group>				
+						<s:SkinnableContainer id="controlContainer" left="0" top="0" bottom="0"
+											  width="80">
+							<s:layout>
+								<s:VerticalLayout gap="10" horizontalAlign="center" paddingLeft="0"
+												  paddingRight="0" paddingTop="10"/>
+							</s:layout>
+							<s:Button id="cnode" width="70" height="30" label="Node"/>
+							<s:Button id="csprite" width="70" height="30" label="Sprite"/>
+							<s:Button id="clayer" width="70" height="30" label="Layer"/>
+							<s:Button id="cbutton" width="70" height="30" label="Button"/>
+						</s:SkinnableContainer>
+			</s:BorderContainer>
+			<!-- right -->
+			<!-- property&res -->
+			<mx:VDividedBox right="0" top="0" bottom="0" width="250" liveDragging="true">
+				<!-- property -->
+				<s:BorderContainer width="100%" height="430">
+					<s:Scroller left="0" right="0" top="0" bottom="0">
+						<s:VGroup id="propertyContainer" width="100%" height="100%" gap="0">
+						</s:VGroup>
+					</s:Scroller>
+				</s:BorderContainer>
+				<!-- res -->
+				<s:BorderContainer width="100%" height="186">
+					<s:Group left="0" right="0" bottom="0" height="100">
+						<s:layout>
+							<s:BasicLayout/>
+						</s:layout>
+						<s:Image id="preview" horizontalCenter="0" verticalCenter="0"/>
+					</s:Group>
+					<mx:Tree id="res" left="0" right="0" top="25" bottom="100" dragEnabled="true"
+							 showRoot="false"></mx:Tree>
+					<mx:LinkButton id="refreshRes" left="2" top="2" label="刷新"/>
+				</s:BorderContainer>
+			</mx:VDividedBox>
+	</s:Group>
+</s:WindowedApplication>

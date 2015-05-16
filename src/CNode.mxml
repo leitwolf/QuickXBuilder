@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" width="232" height="190">
+	<s:layout>
+		<s:HorizontalLayout paddingTop="3"/>
+	</s:layout>
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+		<s:TileGroup width="65" height="100%" columnWidth="65" horizontalGap="2"
+					 requestedColumnCount="1" rowHeight="28" verticalGap="2">
+			<s:Label width="125" text="x" textAlign="right" verticalAlign="middle"/>
+			<s:Label width="125" text="y" textAlign="right" verticalAlign="middle"/>
+			<s:Label width="125" textAlign="right" verticalAlign="middle"/>
+			<s:Label width="125" text="锚点" textAlign="right" verticalAlign="middle"/>
+			<s:Label width="100" text="Tag" textAlign="right" verticalAlign="middle"/>
+			<s:Label width="125" text="是否可见" textAlign="right" verticalAlign="middle"/>
+		</s:TileGroup>
+		<s:TileGroup width="159" height="100%" horizontalAlign="left" horizontalGap="0"
+					 requestedColumnCount="1" rowHeight="28" verticalGap="2">
+			<s:HGroup width="100%" height="27" gap="5" verticalAlign="middle">
+				<s:TextInput id="posX" width="55" maxChars="6" restrict="0-9.\-" text="0.0"
+							 textAlign="center"/>
+				<s:DropDownList id="posXAlign" width="80"></s:DropDownList>
+			</s:HGroup>
+			<s:HGroup width="100%" height="27" gap="5" verticalAlign="middle">
+				<s:TextInput id="posY" width="55" maxChars="6" restrict="0-9.\-" text="0.0"
+							 textAlign="center"/>
+				<s:DropDownList id="posYAlign" width="80"></s:DropDownList>
+			</s:HGroup>
+			<s:DropDownList id="anchorType" width="140"></s:DropDownList>
+			<s:HGroup width="155" height="27" gap="5" verticalAlign="middle">
+				<s:TextInput id="anchorX" width="55" maxChars="3" restrict="0-9.\-" text="0.5"
+							 textAlign="center"/>
+				<s:TextInput id="anchorY" width="55" maxChars="3" restrict="0-9.\-" text="0.5"
+							 textAlign="center"/>
+			</s:HGroup>
+			<s:TextInput id="tag" x="19" width="63" maxChars="5" restrict="0-9\-" text="-1"
+						 textAlign="center"/>
+			<s:CheckBox id="isVisible" width="33"/>
+		</s:TileGroup>
+</s:Group>

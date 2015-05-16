@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" width="232" height="65">
+	<s:layout>
+		<s:HorizontalLayout paddingTop="3"/>
+	</s:layout>
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+		<s:TileGroup width="70" height="100%" columnWidth="70" horizontalAlign="justify"
+					 horizontalGap="2" orientation="rows" requestedColumnCount="1" rowHeight="28"
+					 verticalGap="2">
+			<s:Label x="-27" width="58" text="name" textAlign="right" verticalAlign="middle"/>
+			<s:Label height="21" text="类型" textAlign="right" verticalAlign="middle"/>
+		</s:TileGroup>
+		<s:TileGroup width="131" height="100%" horizontalAlign="left" horizontalGap="0"
+					 requestedColumnCount="1" rowHeight="28" verticalGap="2">
+			<s:TextInput id="bindName" width="120" editable="true" restrict="0-9a-zA-Z_"/>
+			<s:Label id="type" width="78" verticalAlign="middle"/>
+		</s:TileGroup>
+</s:Group>

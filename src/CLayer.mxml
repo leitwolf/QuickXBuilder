@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" width="232" height="68">
+	<s:layout>
+		<s:HorizontalLayout/>
+	</s:layout>
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<s:TileGroup width="65" height="100%" columnWidth="65" horizontalGap="2"
+				 requestedColumnCount="1" rowHeight="28" verticalGap="2">
+		<s:Label width="125" text="color" textAlign="right" verticalAlign="middle"/>
+		<s:Label width="125" text="alpha" textAlign="right" verticalAlign="middle"/>
+	</s:TileGroup>
+	<s:TileGroup width="159" height="79" horizontalAlign="left" horizontalGap="0"
+				 requestedColumnCount="1" rowHeight="28" verticalAlign="justify" verticalGap="2">
+		<mx:ColorPicker id="color" width="33"/>
+		<s:TextInput id="transparent" width="72"/>
+	</s:TileGroup>
+</s:Group>

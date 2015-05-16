@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" width="247" height="92">
+	<s:layout>
+		<s:HorizontalLayout gap="2"/>
+	</s:layout>
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<s:Image id="normal" width="80" height="80" minWidth="80" minHeight="80"/>
+	<s:Image id="pressed" width="80" height="80"/>
+	<s:Image id="disabled" width="80" height="80" minWidth="80" minHeight="80"/>
+</s:Group>
