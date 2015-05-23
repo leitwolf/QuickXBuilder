@@ -18,6 +18,9 @@ package app.data
 	 */	
 	public class ResourceManager
 	{
+		// demo所在文件夹名称
+		public static const demoDir:String="_demo";
+		// 总的node
 		private var _data:ResourceNodeData=null;
 		
 		public function ResourceManager()
@@ -30,11 +33,28 @@ package app.data
 		 */
 		public function load():void
 		{
-			_data=null;
-			var file:File=Config.projectData.resourceDirFile;
+			_data=new ResourceNodeData();
+			_data.label="root";
+			// 先加载demo
+			var file:File=Config.projectData.sceneFilesDirFile;
 			if(file!=null&&file.exists&&file.isDirectory)
 			{
-				_data=ResourceNodeData.load(file);
+				file=file.resolvePath(demoDir);
+				if(file.exists&&file.isDirectory)
+				{
+					var demo:ResourceNodeData=ResourceNodeData.load(file);
+					if(demo.isValid)
+					{
+						_data.addChild(demo);
+					}
+				}
+			}
+			// 再加载资源文件夹
+			file=Config.projectData.resourceDirFile;
+			if(file!=null&&file.exists&&file.isDirectory)
+			{
+				var node:ResourceNodeData=ResourceNodeData.load(file);
+				_data.addChild(node);
 			}
 		}
 		/**

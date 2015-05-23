@@ -111,6 +111,23 @@ package app.data
 			Helper.saveData(JSON.stringify(obj),_url);
 		}
 		/**
+		 * 删除文件 
+		 * 
+		 */		
+		public function deleteFile():void
+		{
+			var file:File=new File(_url);
+			try
+			{
+				file.deleteFile()
+			}
+			catch(e:Error)
+			{
+				trace(e.toString());
+			}
+			
+		}
+		/**
 		 * 是否已经存在场景文件 
 		 * @param name
 		 * @return 

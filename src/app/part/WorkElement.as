@@ -65,6 +65,7 @@ package app.part
 			}
 			this.setPosition();
 			this.setAnchor();
+			this.visible=_data.nodeData.visible;
 		}
 		/**
 		 * 设置图像,也可以是重设
@@ -143,7 +144,7 @@ package app.part
 			var xAlign:String=_data.nodeData.xAlign;
 			if(xAlign==Config.LOCATION_CENTER)
 			{
-				x=w/2-x;
+				x=w/2+x;
 			}
 			else if(xAlign==Config.LOCATION_RIGHT)
 			{
@@ -153,7 +154,7 @@ package app.part
 			var yAlign:String=_data.nodeData.yAlign;
 			if(yAlign==Config.LOCATION_CENTER)
 			{
-				y=h/2-y;
+				y=h/2+y;
 			}
 			else if(yAlign==Config.LOCATION_TOP)
 			{
@@ -315,7 +316,7 @@ package app.part
 			var yAlign:String=_data.nodeData.yAlign;
 			if(yAlign==Config.LOCATION_CENTER)
 			{
-				y=h/2-y;
+				y-=h/2;
 			}
 			else if(yAlign==Config.LOCATION_TOP)
 			{

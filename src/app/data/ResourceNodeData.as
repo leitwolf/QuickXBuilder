@@ -16,6 +16,7 @@ package app.data
 
 	/**
 	 * 资源结点数据结构，可做为树的结点
+	 * 约定：图片在_demo文件夹中（以_demo起止）的为示例图片
 	 * @author lonewolf
 	 * 
 	 */	
@@ -191,7 +192,7 @@ package app.data
 				var pf:File=file.parent.resolvePath(baseName+".plist");
 				if(pf.exists)
 				{
-					trace("plist ---- "+pf.url);
+					// trace("plist ---- "+pf.url);
 					Plist.analysePlist(pf.url);
 					nodeData.loadPlist(file,pf);
 				}
@@ -220,7 +221,6 @@ package app.data
 			}
 			return _image;
 		}
-
 
 	}
 }

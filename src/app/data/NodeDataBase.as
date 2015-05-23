@@ -31,6 +31,26 @@ package app.data
 			child.parent=this;
 			_children.push(child);
 		}
+		/**
+		 * 删除子结点 
+		 * @param child
+		 * 
+		 */		
+		public function removeChild(child:NodeDataBase):void
+		{
+			if(_children!=null&&_children.length>0)
+			{
+				var i:int=0;
+				for(i=0;i<_children.length;i++)
+				{
+					if(_children[i]==child)
+					{
+						_children.splice(i,1);
+						break;
+					}
+				}
+			}
+		}
 
 		public function get children():Array
 		{

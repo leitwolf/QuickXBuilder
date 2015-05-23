@@ -129,7 +129,7 @@ package app.data
 		 * @param name 分配的名称
 		 * @param parent 添加到控件
 		 * 
-		 */		
+		 */
 		private function analyseSprite(data:ControlData,name:String,parent:String):void
 		{
 			var filename:String=data.spriteData.image;
@@ -137,6 +137,16 @@ package app.data
 			{
 				filename="#"+filename;
 				this.addPlist(data.spriteData.imagePlist);
+			}
+			else
+			{
+				// 查看是不是demo文件夹下的
+				// 在demo文件夹下的不生成到lua中
+				if(filename.indexOf(ResourceManager.demoDir)==0)
+				{
+					trace("demo, pass.");
+					return;
+				}
 			}
 			this.addLine("local _control = display.newSprite(\"_filename\")",{_control:name,_filename:filename});
 			var pos:Object=this.getPosition(data);

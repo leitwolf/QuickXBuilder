@@ -43,7 +43,11 @@ package app.part.property
 			_anchorY=_property.anchorY;
 			_anchorType=_property.anchorType;
 			_tag=_property.tag;
-			_isVisible=_property.isVisible;				
+			_isVisible=_property.isVisible;		
+			
+			_posXAlign.focusEnabled=false;
+			_posYAlign.focusEnabled=false;
+			_anchorType.focusEnabled=false;
 			
 			//锚点
 			var arr:ArrayCollection=new ArrayCollection();

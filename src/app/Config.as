@@ -109,6 +109,8 @@ package app
 		public static var projectData:ProjectData=null;
 		// 项目场景文件列表 [fileData]
 		public static var fileDataList:Array=[];
+		// 场景缩放列表(预定)
+		public static const zoomList:Array=[15,30,50,75,100,150,200];
 		// 当前文件
 		public static var curFileData:FileData=null;
 		// 当前控件

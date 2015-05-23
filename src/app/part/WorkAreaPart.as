@@ -9,6 +9,8 @@ package app.part
 	import flash.display.Stage;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import flash.geom.Matrix;
+	import flash.geom.Point;
 	
 	import mx.core.FlexGlobals;
 	import mx.core.UIComponent;
@@ -73,14 +75,22 @@ package app.part
 				// 更新图层
 				this.receiveMessage(null,MessageCenter.CONTROL_COLOR);
 			}
-			else if(type==MessageCenter.ZOOM)
+			else if(type==MessageCenter.SCENE_ZOOM)
 			{
 				// 缩放
+				// 相对于group中心点缩放
 				var s:Number=Config.sceneZoom/100;
-				_container.scaleX=s;
-				_container.scaleY=s;
+				s=s/_container.scaleX;
+				var p:Point=new Point(_group.width/2,_group.height/2);
+				p=_group.localToGlobal(p);
+				p=_container.globalToLocal(p);
+				var m:Matrix=_container.transform.matrix;
+				m.translate(-p.x,-p.y);
+				m.scale(s,s);
+				m.translate(p.x,p.y);
+				_container.transform.matrix=m;
 			}
-			else if(type==MessageCenter.DRAG_SCENE)
+			else if(type==MessageCenter.LOCK_SCENE_STATE_CHANGED)
 			{
 				// 拖动场景
 				_container.mouseChildren=!Config.enableDragScene;
@@ -102,6 +112,15 @@ package app.part
 					container=this.findElement(parent,_container);
 				}
 				this.addNode(Config.newControl,container);
+			}
+			else if(type==MessageCenter.DELETE_CONTROL)
+			{
+				// 删除控件
+				if(_curElement!=null)
+				{
+					_curElement.remove();
+					_curElement=null;					
+				}
 			}
 			else if(type==MessageCenter.CURRENT_CONTROL)
 			{
@@ -127,6 +146,22 @@ package app.part
 					}
 					_curElement=e;
 				}
+			}
+			else if(type==MessageCenter.DRAG_CONTROL)
+			{
+				// 拖动控件
+				this.newFileData();
+				// 找出要拖动的控件
+				e=this.findElement(Config.curControl,_container);
+				if(e!=null)
+				{
+					e.setSelected(true);
+				}
+				else
+				{
+					trace("no cur");
+				}
+				_curElement=e;
 			}
 			else if(_elementTypeList.indexOf(type)!=-1)
 			{
@@ -226,7 +261,7 @@ package app.part
 				for(i=len-1;i>=0;i--)
 				{
 					(_container.getElementAt(i) as WorkElement).remove();
-				}				
+				}
 			}
 			if(Config.curFileData==null)
 			{
@@ -278,8 +313,10 @@ package app.part
 			_curElement=element;
 			element.setSelected(true);
 			Config.curControl=element.data;
+			
 			//通知控件树
 			this.sendMessage(MessageCenter.CURRENT_CONTROL);
+			_container.stage.focus=_curElement;
 		}
 		/**
 		 * 拖动了，坐标改变

@@ -67,7 +67,7 @@ package app.part
 			_publish.selected=false;
 			_dragScene.label="锁住场景";
 			
-			_recentProjectList.dataProvider=Config.getRecentProjectList();			
+			_recentProjectList.dataProvider=Config.getRecentProjectList();
 			_resolution.dataProvider=Config.getResolutionList();
 			_resolution.selectedIndex=0;
 			
@@ -78,13 +78,17 @@ package app.part
 			_dir.selectedIndex=0;
 			
 			data=new ArrayCollection();
-			data.addItem({label:"50%",data:50});
-			data.addItem({label:"75%",data:75});
-			data.addItem({label:"100%",data:100});
-			data.addItem({label:"150%",data:150});
-			data.addItem({label:"200%",data:200});
+			for each(var z:int in Config.zoomList)
+			{
+				data.addItem({label:z+"%",data:z});
+			}
 			_zoom.dataProvider=data;
-			_zoom.selectedIndex=2;
+			_zoom.selectedIndex=4;
+			
+			_recentProjectList.focusEnabled=false;
+			_resolution.focusEnabled=false;
+			_dir.focusEnabled=false;
+			_zoom.focusEnabled=false;
 			
 			
 			FlexGlobals.topLevelApplication.newScene.addEventListener(MouseEvent.CLICK,newSceneHandler);
@@ -123,6 +127,16 @@ package app.part
 				_resolution.dataProvider=Config.getResolutionList();
 				this.checkResolution();
 				_resolution.invalidateDisplayList();
+			}
+			else if(type==MessageCenter.LOCK_SCENE_STATE_CHANGED)
+			{
+				// 场景拖动状态改变
+				this.lockSceneStateChanged();
+			}
+			else if(type==MessageCenter.SCENE_ZOOM)
+			{
+				// 场景缩放
+				this.zoomChanged();
 			}
 			else if(type==MessageCenter.FILE_DIRTY)
 			{
@@ -202,6 +216,39 @@ package app.part
 			Config.resolution.height=h;
 		}
 		/**
+		 * 场景拖放状态改变 
+		 * 
+		 */		
+		private function lockSceneStateChanged():void
+		{
+			var enable:Boolean=Config.enableDragScene;
+			if(enable)
+			{
+				_dragScene.label="可拖动场景";
+			}
+			else
+			{
+				_dragScene.label="不可拖动";
+			}
+			_dragScene.selected=enable;
+		}
+		/**
+		 * 场景缩放改变 
+		 * 
+		 */		
+		private function zoomChanged():void
+		{
+			var arr:ArrayCollection=_zoom.dataProvider as ArrayCollection;
+			for each(var obj:Object in arr)
+			{
+				if(obj.data==Config.sceneZoom)
+				{
+					_zoom.selectedItem=obj;
+					break;
+				}
+			}
+		}
+		/**
 		 * 场景缩放 
 		 * @param event
 		 * 
@@ -210,7 +257,7 @@ package app.part
 		{
 			var obj:Object=_zoom.selectedItem;
 			Config.sceneZoom=obj.data;
-			this.sendMessage(MessageCenter.ZOOM);
+			this.sendMessage(MessageCenter.SCENE_ZOOM);
 		}
 		/**
 		 * 改变了分辨率 
@@ -290,16 +337,9 @@ package app.part
 		 */		
 		protected function dragSceneChangeHandler(event:Event):void
 		{
-			if(_dragScene.selected)
-			{
-				_dragScene.label="拖动场景";
-			}
-			else
-			{
-				_dragScene.label="锁住场景";
-			}
 			Config.enableDragScene=_dragScene.selected;
-			this.sendMessage(MessageCenter.DRAG_SCENE);
+			this.lockSceneStateChanged();
+			this.sendMessage(MessageCenter.LOCK_SCENE_STATE_CHANGED);
 		}
 		/**
 		 * 导入项目 

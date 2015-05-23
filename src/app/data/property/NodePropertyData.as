@@ -25,6 +25,32 @@ package app.data.property
 		public function NodePropertyData()
 		{
 		}
+		/**
+		 * 移动，要根据对齐方式来设置
+		 * 如x对齐为right,则要减去
+		 * @param x1
+		 * @param y1
+		 * 
+		 */		
+		public function move(x1:Number,y1:Number):void
+		{
+			if(xAlign==Config.LOCATION_RIGHT)
+			{
+				this.x-=x1;
+			}
+			else
+			{
+				this.x+=x1;
+			}
+			if(yAlign==Config.LOCATION_TOP)
+			{
+				this.y-=y1;
+			}
+			else
+			{
+				this.y+=y1;
+			}
+		}
 		
 		override public function decodeObj(obj:Object):void
 		{
@@ -53,6 +79,7 @@ package app.data.property
 			obj.anchorY=anchorY;
 			obj.tag=tag;
 			obj.visible=visible;
-		}	
+		}
+		
 	}
 }

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:TitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009"
+			   xmlns:s="library://ns.adobe.com/flex/spark"
+			   xmlns:mx="library://ns.adobe.com/flex/mx"
+			   width="260" height="126"
+			   creationComplete="titlewindow1_creationCompleteHandler(event)">
+	<fx:Script>
+		<![CDATA[
+			import app.win.DeleteFileConfirmWin;
+			
+			import mx.events.FlexEvent;
+			
+			protected function titlewindow1_creationCompleteHandler(event:FlexEvent):void
+			{
+				new DeleteFileConfirmWin(this);
+			}
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<s:HGroup left="10" right="10" top="10" height="37" verticalAlign="middle">
+		<s:Label width="178" text="确定要删除该文件吗？"/>
+	</s:HGroup>
+	<s:Button id="ok" y="68" label="确定" horizontalCenter="47"/>
+	<s:Button id="cancel" x="51" y="68" label="取消"/>
+</s:TitleWindow>

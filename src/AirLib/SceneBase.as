@@ -4,7 +4,9 @@ package AirLib
 	import flash.desktop.NativeDragManager;
 	import flash.display.Stage;
 	import flash.events.KeyboardEvent;
+	import flash.events.MouseEvent;
 	import flash.events.NativeDragEvent;
+	import flash.ui.Keyboard;
 	
 	import mx.core.FlexGlobals;
 
@@ -155,6 +157,11 @@ package AirLib
 		}		
 		private function keyUpHandler1(event:KeyboardEvent):void
 		{
+			if(event.keyCode==Keyboard.S&&event.ctrlKey)
+			{
+				// 保存
+				this.keyPressSave();
+			}
 			this.keyUpHandler(event.keyCode);
 		}
 		/**
@@ -171,6 +178,48 @@ package AirLib
 		 * 
 		 */		
 		protected function keyUpHandler(keyCode:uint):void
+		{			
+		}
+		/**
+		 * 鼠标滚轮滚动
+		 * @param enable
+		 * 
+		 */		
+		protected function enableMouseWheel(enable:Boolean):void
+		{
+			var stage:Stage=FlexGlobals.topLevelApplication.stage;
+			if(enable)
+			{
+				stage.addEventListener(MouseEvent.MOUSE_WHEEL,mouseWheelHandler1);
+			}
+			else
+			{
+				stage.removeEventListener(MouseEvent.MOUSE_WHEEL,mouseWheelHandler1);				
+			}		
+		}
+		/**
+		 * 鼠标滚轮事件处理 
+		 * @param event
+		 * 
+		 */		
+		private function mouseWheelHandler1(event:MouseEvent):void
+		{			
+			this.mouseWheelHandler(event.delta);
+		}
+		/**
+		 * 真正处理滚轮事件 
+		 * @param delta 正值向上，负值向下
+		 * 
+		 */
+		protected function mouseWheelHandler(delta:int):void
+		{			
+		}
+		
+		/**
+		 * Command+S 保存 
+		 * 
+		 */
+		protected function keyPressSave():void
 		{			
 		}
 		

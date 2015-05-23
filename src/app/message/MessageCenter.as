@@ -23,12 +23,12 @@ package app.message
 		// ====各消息类型====	
 		// 分辨率
 		public static const RESOLUTION:String="resolution";
-		// 缩放
-		public static const ZOOM:String="zoom";
+		// 场景缩放
+		public static const SCENE_ZOOM:String="scene_zoom";
 		// 自定义分辨率
 		public static const CUSTOM_RESOLUTION:String="custom_resolution";
-		// 拖动场景
-		public static const DRAG_SCENE:String="drag_scene";
+		// 拖动场景状态改变
+		public static const LOCK_SCENE_STATE_CHANGED:String="lock_scene_state_changed";
 		// 新项目
 		public static const NEW_PROJECT:String="new_project";
 		// 新文件
@@ -37,8 +37,12 @@ package app.message
 		public static const CURRENT_FILE:String="current_file";
 		// 新控件
 		public static const NEW_CONTROL:String="new_control";
+		// 删除控件
+		public static const DELETE_CONTROL:String="delete_control";
 		// 当前控件
 		public static const CURRENT_CONTROL:String="current_control";
+		// 拖动控件
+		public static const DRAG_CONTROL:String="drag_control";
 		// 控件名
 		public static const CONTROL_NAME:String="control_name";
 		// 控件图片
@@ -116,7 +120,6 @@ package app.message
 		 */
 		public static function sendMessage(sender:Object, type:String):void
 		{
-//			trace("ccc "+type);
 			//分发到各个部件
 			for each(var m:IMessager in messagerList)
 			{

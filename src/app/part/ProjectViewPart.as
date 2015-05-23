@@ -1,14 +1,19 @@
 package app.part
 {
+	import AirLib.G;
+	
 	import app.Config;
 	import app.data.FileData;
 	import app.message.MessageCenter;
 	import app.message.Messager;
 	
+	import flash.display.DisplayObject;
+	import flash.display.DisplayObjectContainer;
 	import flash.filesystem.File;
 	
 	import mx.collections.ArrayCollection;
 	import mx.core.FlexGlobals;
+	import mx.managers.PopUpManager;
 	
 	import spark.components.List;
 	import spark.events.IndexChangeEvent;
@@ -26,6 +31,46 @@ package app.part
 		{
 			_list=FlexGlobals.topLevelApplication.projectView;			
 			_list.addEventListener(IndexChangeEvent.CHANGE,listChangeHandler);
+		}
+		/**
+		 * 尝试删除UI文件，如果当前焦点在list控件，则可以删除 
+		 * @return 可删除返回true
+		 * 
+		 */
+		public function tryDeleteFile():Boolean
+		{
+			if(_list.stage.focus==_list)
+			{
+				if(Config.curFileData)
+				{					
+					G.curScene.onEnd();
+					PopUpManager.createPopUp(FlexGlobals.topLevelApplication as DisplayObject,DeleteFileConfirm,true);
+					return true;
+				}
+			}
+			return false;
+		}
+		/**
+		 * 确定删除文件 
+		 * 
+		 */		
+		public function deleteFile():void
+		{
+			// 从列表中删除
+			var i:int=0;
+			var arr:Array=Config.fileDataList;
+			for(i=0;i<arr.length;i++)
+			{
+				if(arr[i]==Config.curFileData)
+				{
+					arr.splice(i,1);
+					break;
+				}
+			}
+			Config.curFileData.deleteFile();
+			_list.dataProvider=new ArrayCollection(arr);
+			Config.curFileData=null;
+			this.sendMessageDelay(MessageCenter.CURRENT_FILE);			
 		}
 		/**
 		 * 接收消息 
