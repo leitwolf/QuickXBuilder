@@ -9,7 +9,7 @@ package app.data
 	/**
 	 * 场景文件数据,可做为控件树根结点，也可做文件列表的结点，要延迟加载
 	 * 
-	 * 已保存的文件结构为{width,height,controls:[]}
+	 * 已保存的文件结构为{type,width,height,controls:[]}
 	 * controls为所包含的控件，其结构为{type,custom,children:[],x,y,anchorX,...}
 	 * 一个control包含了其子组件的信息
 	 * 
@@ -21,6 +21,8 @@ package app.data
 		//是否合法，一般是加载文件后
 		private var _isValid:Boolean=false;
 				
+		// 类型
+		private var _type:String=Config.FILE_TYPE_SCENE;
 		// 文件地址
 		private var _url:String;
 		//不包含后缀的文件名
@@ -40,12 +42,33 @@ package app.data
 		/**
 		 * 这是新建的文件 
 		 * 
-		 */		
+		 */
 		public function newFile():void
 		{
 			_isValid=true;
 			_loaded=true;
 			this.save();
+		}
+		/**
+		 * 重命名 
+		 * @param name
+		 * 
+		 */
+		public function rename(name:String):void
+		{
+			var file:File=new File(_url);
+			var newFile:File=Config.projectData.sceneFilesDirFile.resolvePath(name+"."+Config.FILE_EXT);
+			file.moveTo(newFile,true);
+			_name=name;
+			label=name;
+			try
+			{
+				file.deleteFile();
+			}
+			catch(e:Error)
+			{
+				
+			}
 		}
 		/**
 		 * 加载 
@@ -68,6 +91,10 @@ package app.data
 					if(!obj.controls||!(obj.controls is Array))
 					{
 						return;
+					}
+					if(obj.type)
+					{
+						_type=obj.type;
 					}
 					_width=obj.width;
 					_height=obj.height;
@@ -107,7 +134,7 @@ package app.data
 					arr.push(controlData.encodeData());
 				}
 			}
-			var obj:Object={width:_width,height:_height,controls:arr};
+			var obj:Object={type:_type,width:_width,height:_height,controls:arr};
 			Helper.saveData(JSON.stringify(obj),_url);
 		}
 		/**
@@ -167,6 +194,16 @@ package app.data
 		public function set height(value:Number):void
 		{
 			_height = value;
+		}
+
+		public function get type():String
+		{
+			return _type;
+		}
+
+		public function set type(value:String):void
+		{
+			_type = value;
 		}
 
 	}

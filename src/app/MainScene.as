@@ -21,6 +21,8 @@ package app
 	import mx.controls.Alert;
 	import mx.core.FlexGlobals;
 	import mx.managers.PopUpManager;
+	
+	import spark.components.TextInput;
 
 	public class MainScene extends SceneBase
 	{
@@ -51,11 +53,19 @@ package app
 				// 删除
 				if(!Config.projectViewPart.tryDeleteFile())
 				{
+					if(FlexGlobals.topLevelApplication.stage.focus is TextInput)
+					{
+						return;
+					}
 					Config.controlViewPart.deleteControl();
 				}
 			}
 			else if(keyCode==Keyboard.LEFT||keyCode==Keyboard.RIGHT||keyCode==Keyboard.UP||keyCode==Keyboard.DOWN)
 			{
+				if(Config.curControl==null||Config.curControl.locked)
+				{
+					return;
+				}
 				// 移动当前控件
 				var x:Number=0;
 				var y:Number=0;
@@ -79,6 +89,7 @@ package app
 				{
 					Config.curControl.nodeData.move(x,y);
 					MessageCenter.sendMessage(null,MessageCenter.CONTROL_POSITION);
+					MessageCenter.sendMessage(null,MessageCenter.FILE_DIRTY);
 				}
 			}
 			else if(keyCode==Keyboard.ALTERNATE)
@@ -100,6 +111,15 @@ package app
 				// 不可拖动地图
 				Config.enableDragScene=false;
 				MessageCenter.sendMessage(null,MessageCenter.LOCK_SCENE_STATE_CHANGED);
+			}
+			else if(keyCode==Keyboard.L)
+			{
+				// 锁定/解锁控件
+				if(Config.curControl)
+				{
+					Config.curControl.toggleLock();
+					MessageCenter.sendMessage(null,MessageCenter.LOCK_CONTROL);
+				}
 			}
 		}	
 		
@@ -142,6 +162,10 @@ package app
 		 */		
 		override protected function mouseWheelHandler(delta:int):void
 		{
+			if(!Config.workAreaPart.checkWheel())
+			{
+				return;
+			}
 			// 当前缩放值所在序号
 			var index:int;
 			var list:Array=Config.zoomList;

@@ -21,6 +21,8 @@ package app.data
 		private var _type:String;
 		// 自定义的其它场景(只是文件名，不包含后缀)，为空则不是自定义
 		private var _custom:String="";
+		// 是否锁定，锁住位置
+		private var _locked:Boolean=false;
 		
 		private var _basicData:BasicPropertyData=new BasicPropertyData();
 		private var _nodeData:NodePropertyData=new NodePropertyData();
@@ -57,6 +59,15 @@ package app.data
 			}
 		}
 		/**
+		 * 锁定/解锁控件 
+		 * 
+		 */		
+		public function toggleLock():void
+		{
+			_locked=!_locked;
+			this.resetLabel();
+		}
+		/**
 		 * 设置标签名
 		 * 
 		 */		
@@ -74,6 +85,25 @@ package app.data
 			{
 				label=this.getUpperFirst(_type);
 			}
+			// 加上锁定和可见
+			label+="[";
+			if(_locked)
+			{
+				label+="lock,";
+			}
+			else
+			{
+				label+="unlock,";
+			}
+			if(_nodeData.visible)
+			{
+				label+="v";
+			}
+			else
+			{
+				label+="uv";
+			}
+			label+="]";
 		}
 		/**
 		 * 首字母大写 
@@ -198,5 +228,14 @@ package app.data
 			return _buttonData;
 		}
 
+		public function get locked():Boolean
+		{
+			return _locked;
+		}
+
+		public function set locked(value:Boolean):void
+		{
+			_locked = value;			
+		}
 	}
 }

@@ -3,18 +3,24 @@ package app.part
 	import app.Config;
 	import app.data.ControlData;
 	import app.data.FileData;
+	import app.data.ResourceNodeData;
 	import app.message.MessageCenter;
 	import app.message.Messager;
 	
+	import flash.display.DisplayObjectContainer;
+	import flash.display.InteractiveObject;
 	import flash.display.Stage;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	
+	import mx.core.DragSource;
 	import mx.core.FlexGlobals;
 	import mx.core.UIComponent;
+	import mx.events.DragEvent;
 	import mx.events.ResizeEvent;
+	import mx.managers.DragManager;
 	
 	import spark.components.Group;
 	import spark.components.Panel;
@@ -45,6 +51,10 @@ package app.part
 			_group.addEventListener(ResizeEvent.RESIZE,resizeHandler);
 			
 			_container.addEventListener(MouseEvent.MOUSE_DOWN,mouseDownHandler);
+			
+			// 拖动
+			_container.addEventListener(DragEvent.DRAG_ENTER,dragEnterHandler);
+			_container.addEventListener(DragEvent.DRAG_DROP,dragDropHandler);
 			
 			this.createStage();
 		}
@@ -80,15 +90,16 @@ package app.part
 				// 缩放
 				// 相对于group中心点缩放
 				var s:Number=Config.sceneZoom/100;
-				s=s/_container.scaleX;
-				var p:Point=new Point(_group.width/2,_group.height/2);
-				p=_group.localToGlobal(p);
-				p=_container.globalToLocal(p);
-				var m:Matrix=_container.transform.matrix;
-				m.translate(-p.x,-p.y);
-				m.scale(s,s);
-				m.translate(p.x,p.y);
-				_container.transform.matrix=m;
+				_container.scaleX=_container.scaleY=s;
+//				s=s/_container.scaleX;
+//				var p:Point=new Point(_group.width/2,_group.height/2);
+//				p=_group.localToGlobal(p);
+//				p=_container.globalToLocal(p);
+//				var m:Matrix=_container.transform.matrix;
+//				m.translate(-p.x,-p.y);
+//				m.scale(s,s);
+//				m.translate(p.x,p.y);
+//				_container.transform.matrix=m;
 			}
 			else if(type==MessageCenter.LOCK_SCENE_STATE_CHANGED)
 			{
@@ -172,6 +183,15 @@ package app.part
 			}
 		}
 		/**
+		 * 是否可以通过滚轮来缩放
+		 * @return 
+		 * 
+		 */
+		public function checkWheel():Boolean
+		{
+			return _group.hitTestPoint(_group.stage.mouseX,_group.stage.mouseY);
+		}
+		/**
 		 * 建立舞台
 		 * 
 		 */
@@ -219,6 +239,70 @@ package app.part
 				}
 			}
 			return null;
+		}
+		/**
+		 * 拖动到上面，判定能不能放置 
+		 * @param event
+		 * 
+		 */
+		protected function dragEnterHandler(event:DragEvent):void
+		{
+			//数据源
+			var ds:DragSource=event.dragSource;
+			var data:Object=null;
+			if(ds.hasFormat("treeItems"))
+			{
+				var arr:Array=ds.dataForFormat("treeItems") as Array;
+				//不符合
+				if(arr==null||arr.length==0)
+				{
+					return;
+				}
+				data=arr[0];
+				if(data is ResourceNodeData)
+				{
+					DragManager.acceptDragDrop(_container);
+				}
+			}
+		}
+		/**
+		 * 放置 
+		 * @param event
+		 * 
+		 */		
+		protected function dragDropHandler(event:DragEvent):void
+		{
+			var ds:DragSource=event.dragSource;
+			var data:ResourceNodeData=(ds.dataForFormat("treeItems") as Array)[0] as ResourceNodeData;
+			
+			var control:ControlData=new ControlData(Config.CONTROL_TYPE_SPRITE);
+			control.spriteData.image=data.path;
+			control.spriteData.imagePlist=data.plist;
+			// 确定放置点
+			var container:DisplayObjectContainer=_container;
+			if(_curElement)
+			{
+				if(_curElement.data.type==Config.CONTROL_TYPE_NODE)
+				{
+					container=_curElement;
+				}
+				else
+				{
+					container=_curElement.owner;
+				}
+			}
+			var p:Point=container.globalToLocal(new Point(event.stageX,event.stageY));
+			control.nodeData.x=p.x;
+			if(container==_container)
+			{
+				control.nodeData.y=Config.resolution.height-p.y;
+			}
+			else
+			{
+				control.nodeData.y=-p.y;
+			}			
+			Config.newControl=control;
+			MessageCenter.sendMessage(null,MessageCenter.NEW_CONTROL);
 		}
 		
 		protected function resizeHandler(event:ResizeEvent):void

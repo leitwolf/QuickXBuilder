@@ -102,6 +102,7 @@ package app.part.property
 		 */		
 		override public function receiveMessage(sender:Object, type:String):void
 		{
+			super.receiveMessage(sender,type);
 			if(type==MessageCenter.CONTROL_POSITION)
 			{
 				// 当前控件位置改变
@@ -120,6 +121,7 @@ package app.part.property
 			_baseData=data;
 			//检测是否可见
 			this.checkVisible();
+			this.checkLock();
 			
 			if(data==null)
 			{
@@ -187,6 +189,7 @@ package app.part.property
 			else if(ui==_isVisible)
 			{
 				_data.visible=_isVisible.selected;
+				Config.curControl.resetLabel();
 				this.sendMessage(MessageCenter.CONTROL_VISIBLE);
 			}
 			this.sendMessage(MessageCenter.FILE_DIRTY);

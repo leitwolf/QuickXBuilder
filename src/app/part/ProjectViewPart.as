@@ -94,6 +94,13 @@ package app.part
 				_list.selectedItem=Config.curFileData;
 				this.sendMessageDelay(MessageCenter.CURRENT_FILE);
 			}
+			else if(type==MessageCenter.RENAME_FILE)
+			{
+				// 修改名称
+				arr=new ArrayCollection(Config.fileDataList);
+				_list.dataProvider=arr;
+				_list.selectedItem=Config.curFileData;
+			}
 		}		
 		
 		/**

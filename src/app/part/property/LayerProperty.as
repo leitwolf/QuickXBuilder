@@ -33,6 +33,7 @@ package app.part.property
 			_baseData=data;
 			//检测是否可见
 			this.checkVisible();
+			this.checkLock();
 			
 			if(data==null)
 			{

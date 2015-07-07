@@ -2,6 +2,7 @@ package app.part.property
 {
 	import app.Config;
 	import app.data.property.PropertyDataBase;
+	import app.message.MessageCenter;
 	import app.message.Messager;
 	import app.part.ControlPart;
 	
@@ -51,6 +52,40 @@ package app.part.property
 			_button.addEventListener(MouseEvent.CLICK,clickHandler);
 			
 			_container=FlexGlobals.topLevelApplication.propertyContainer;
+		}
+		/**
+		 * 接收消息 
+		 * @param sender
+		 * @param type
+		 * 
+		 */		
+		override public function receiveMessage(sender:Object, type:String):void
+		{
+			if(type==MessageCenter.LOCK_CONTROL)
+			{
+				// 锁定控件
+				this.checkLock();
+			}
+		}
+		/**
+		 * 检测控件是否被锁定了 
+		 * 
+		 */		
+		protected function checkLock():void
+		{
+			if(Config.curControl)
+			{
+				if(Config.curControl.locked)
+				{
+					_content.mouseEnabled=false;
+					_content.mouseChildren=false;
+				}
+				else
+				{
+					_content.mouseEnabled=true;
+					_content.mouseChildren=true;
+				}
+			}			
 		}
 		/**
 		 * 设置图片源，如果源不存在则使用默认的 

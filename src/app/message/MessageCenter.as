@@ -33,6 +33,8 @@ package app.message
 		public static const NEW_PROJECT:String="new_project";
 		// 新文件
 		public static const NEW_FILE:String="new_file";
+		// 修改文件名
+		public static const RENAME_FILE:String="rename_file";
 		// 当前文件
 		public static const CURRENT_FILE:String="current_file";
 		// 新控件
@@ -43,6 +45,8 @@ package app.message
 		public static const CURRENT_CONTROL:String="current_control";
 		// 拖动控件
 		public static const DRAG_CONTROL:String="drag_control";
+		// 锁定控件
+		public static const LOCK_CONTROL:String="lock_control";
 		// 控件名
 		public static const CONTROL_NAME:String="control_name";
 		// 控件图片

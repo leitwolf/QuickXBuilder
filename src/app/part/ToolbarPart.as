@@ -6,6 +6,7 @@ package app.part
 	import app.data.ProjectData;
 	import app.message.MessageCenter;
 	import app.message.Messager;
+	import app.win.CreateFileWin;
 	import app.win.CreateProjectWin;
 	
 	import flash.display.DisplayObject;
@@ -29,8 +30,10 @@ package app.part
 	 */	
 	public class ToolbarPart extends Messager
 	{
-		// 新场景
-		private var _newScene:LinkButton;
+		// 新建文件
+		private var _newFile:LinkButton;
+		// 修改文件名
+		private var _modifyFile:LinkButton;
 		// 保存场景
 		private var _saveScene:LinkButton;
 		// 修改项目
@@ -50,7 +53,8 @@ package app.part
 		
 		public function ToolbarPart()
 		{
-			_newScene=FlexGlobals.topLevelApplication.newScene;
+			_newFile=FlexGlobals.topLevelApplication.newFile;
+			_modifyFile=FlexGlobals.topLevelApplication.modifyFile;
 			_saveScene=FlexGlobals.topLevelApplication.saveScene;
 			_modifyProject=FlexGlobals.topLevelApplication.modifyProject;
 			_recentProjectList=FlexGlobals.topLevelApplication.recentProjectList;
@@ -60,7 +64,7 @@ package app.part
 			_dragScene=FlexGlobals.topLevelApplication.dragScene;
 			_publish=FlexGlobals.topLevelApplication.publish;
 			
-			_newScene.enabled=false;
+			_newFile.enabled=false;
 			_modifyProject.enabled=false;
 			_saveScene.enabled=false;
 			_dragScene.selected=false;
@@ -91,7 +95,8 @@ package app.part
 			_zoom.focusEnabled=false;
 			
 			
-			FlexGlobals.topLevelApplication.newScene.addEventListener(MouseEvent.CLICK,newSceneHandler);
+			_newFile.addEventListener(MouseEvent.CLICK,newSceneHandler);
+			_modifyFile.addEventListener(MouseEvent.CLICK,modifyFileHandler);
 			FlexGlobals.topLevelApplication.saveScene.addEventListener(MouseEvent.CLICK,saveSceneHandler);
 			FlexGlobals.topLevelApplication.newProject.addEventListener(MouseEvent.CLICK,createProjectHandler);
 			FlexGlobals.topLevelApplication.modifyProject.addEventListener(MouseEvent.CLICK,modifyProjectHandler);
@@ -117,7 +122,7 @@ package app.part
 			{
 				// 打开新项目，重新加载最近文件
 				_recentProjectList.dataProvider=Config.getRecentProjectList();
-				_newScene.enabled=true;
+				_newFile.enabled=true;
 				_modifyProject.enabled=true;
 				_publish.enabled=true;
 			}
@@ -301,7 +306,7 @@ package app.part
 				if(project.isValid)
 				{
 					Config.projectData=project;
-					_newScene.enabled=true;
+					_newFile.enabled=true;
 					_modifyProject.enabled=true;
 					this.sendMessage(MessageCenter.NEW_PROJECT);
 				}
@@ -315,8 +320,24 @@ package app.part
 		protected function newSceneHandler(event:MouseEvent):void
 		{
 			G.curScene.onEnd();
+			CreateFileWin.type=1;
 			PopUpManager.createPopUp(FlexGlobals.topLevelApplication as DisplayObject,CreateFile,true);
-		}	
+		}
+		/**
+		 * 修改文件名
+		 * @param event
+		 * 
+		 */
+		protected function modifyFileHandler(event:MouseEvent):void
+		{
+			if(!Config.curFileData)
+			{
+				return;
+			}
+			G.curScene.onEnd();
+			CreateFileWin.type=2;
+			PopUpManager.createPopUp(FlexGlobals.topLevelApplication as DisplayObject,CreateFile,true);
+		}
 		/**
 		 * 保存场景 
 		 * @param event

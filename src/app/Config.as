@@ -54,8 +54,12 @@ package app
 		private static var sceneClass:Class;
 		
 		
-		// ====enum 类型定义	====		
-		// 控件类别
+		// ====enum 类型定义	====
+		// 文件类型，场景或自定义控件
+		public static const FILE_TYPE_SCENE:String="scene";
+		public static const FILE_TYPE_CUSTOM_CONTROL:String="custom_control";
+		
+		// 控件类型
 		public static const CONTROL_TYPE_NODE:String="node";
 		public static const CONTROL_TYPE_SPRITE:String="sprite";
 		public static const CONTROL_TYPE_LAYER:String="layer";

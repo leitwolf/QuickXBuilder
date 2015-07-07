@@ -248,6 +248,13 @@ package app.part
 			// 颜色层不可以拖动
 			if(_data.type==Config.CONTROL_TYPE_LAYER)
 			{
+				event.stopImmediatePropagation();
+				return;
+			}
+			// 锁住的也不可以拖动
+			if(_data.locked)
+			{
+				event.stopImmediatePropagation();
 				return;
 			}
 			_startDragPos.x=this.x;

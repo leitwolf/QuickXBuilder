@@ -5,6 +5,10 @@ package app.part
 	import app.message.MessageCenter;
 	import app.message.Messager;
 	
+	import flash.display.NativeMenu;
+	import flash.display.NativeMenuItem;
+	import flash.events.Event;
+	
 	import mx.controls.Tree;
 	import mx.core.DragSource;
 	import mx.core.FlexGlobals;
@@ -24,6 +28,8 @@ package app.part
 		private var _root:ControlData=new ControlData();
 		// 拖动的时候不处理节点改变
 		private var _dragging:Boolean=false;
+		// 右键菜单
+		private var _menu:NativeMenu;
 		
 		public function ControlViewPart()
 		{
@@ -33,6 +39,13 @@ package app.part
 			_tree.dragMoveEnabled=true;
 			_tree.dropEnabled=true;
 			_tree.focusEnabled=false;
+			
+			_menu=new NativeMenu();
+			var item:NativeMenuItem=new NativeMenuItem("lock1");
+			_menu.addItem(item);
+			_tree.contextMenu=_menu;
+			_menu.addEventListener(Event.DISPLAYING,menuDisplayingHandler);
+			_menu.addEventListener(Event.SELECT,menuSelectHandler);
 			
 			_tree.addEventListener(ListEvent.CHANGE,treeChangeHandler);	
 			_tree.addEventListener(DragEvent.DRAG_COMPLETE,dragCompleteHandler);
@@ -64,9 +77,46 @@ package app.part
 				// 当前控件
 				_tree.selectedItem=Config.curControl;
 			}
-			else if(type==MessageCenter.CONTROL_NAME)
+			else if(type==MessageCenter.CONTROL_NAME||type==MessageCenter.LOCK_CONTROL||type==MessageCenter.CONTROL_VISIBLE)
 			{
 				// 控件名改变，刷新树列表
+				_tree.invalidateList();
+			}
+		}
+		/**
+		 * 显示右键菜单
+		 * @param event
+		 * 
+		 */		
+		protected function menuDisplayingHandler(event:Event):void
+		{
+			_menu.removeAllItems();
+			var cur:ControlData=Config.curControl;
+			if(cur)
+			{
+				var item:NativeMenuItem=new NativeMenuItem();
+				if(cur.locked)
+				{
+					item.label="unlock";
+				}
+				else
+				{
+					item.label="lock";
+				}
+				_menu.addItem(item);
+			}
+		}
+		/**
+		 * 选择菜单 
+		 * @param event
+		 * 
+		 */		
+		protected function menuSelectHandler(event:Event):void
+		{
+			if(Config.curControl)
+			{
+				Config.curControl.toggleLock();
+				this.sendMessage(MessageCenter.LOCK_CONTROL);
 				_tree.invalidateList();
 			}
 		}

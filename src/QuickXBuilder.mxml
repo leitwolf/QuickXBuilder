@@ -29,7 +29,8 @@
 		<s:layout>
 			<s:HorizontalLayout gap="2" verticalAlign="middle"/>
 		</s:layout>
-		<mx:LinkButton id="newScene" width="75" height="27" label="新建场景" fontSize="14"/>
+		<mx:LinkButton id="newFile" width="75" height="27" label="新建文件" fontSize="14"/>
+		<mx:LinkButton id="modifyFile" label="修改文件"/>
 		<mx:VRule width="4" height="25" strokeColor="#F7FCFC"/>
 		<mx:LinkButton id="saveScene" label="保存"/>
 		<mx:LinkButton id="newProject" width="75" height="27" label="导入项目" fontSize="14"/>

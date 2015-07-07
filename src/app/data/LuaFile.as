@@ -29,9 +29,10 @@ package app.data
 		{
 			_data=data;
 			var template:String;
-			if(data.width==Config.projectData.width&&data.height==Config.projectData.height)
-			{
+			
 				_isScene=true;
+			if(data.type==Config.FILE_TYPE_SCENE)
+			{
 				template=Config.getLuaTemplate("Scene");
 				var re:RegExp=new RegExp(/\$Scene\$/g);
 				template=template.replace(re,data.name);
@@ -180,11 +181,21 @@ package app.data
 				pressed="#"+pressed;
 				this.addPlist(data.buttonData.pressedPlist);
 			}
+			// 为空则要前一个
+			if(pressed=="")
+			{
+				pressed=normal;
+			}
 			var disabled:String=data.buttonData.disabled;
 			if(data.buttonData.disabledPlist!="")
 			{
 				disabled="#"+disabled;
 				this.addPlist(data.buttonData.disabledPlist);
+			}
+			// 为空则要第一个			
+			if(disabled=="")
+			{
+				disabled=normal;
 			}
 			this.addLine("local images = {normal = \"_normal\", pressed = \"_pressed\", disabled = \"_disabled\"}",{_normal:normal,_pressed:pressed,_disabled:disabled});
 			this.addLine("local _control = cc.ui.UIPushButton.new(images)",{_control:name});
